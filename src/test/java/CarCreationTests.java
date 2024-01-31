@@ -15,7 +15,7 @@ public class CarCreationTests {
 
     @Test
     public void createCarResponseIsSuccess() {
-        String expectedResponse = "\"Brand\": \"Subaru\",\n" + "  \"price\": \"42\"";
+        String expectedResponse = "\"Brand\": \"Subaru\",\n" + "  \"price\": 42";
 
         createCarScenario(201, "", expectedResponse);
     }
@@ -28,10 +28,10 @@ public class CarCreationTests {
 
     }
 
-    private Map<String, String> createCarParams(String id) {
-        Map<String, String> map = new HashMap<>();
+    private Map<String, Object> createCarParams(String id) {
+        Map<String, Object> map = new HashMap<>();
         map.put("Brand", "Subaru");
-        map.put("price", "42");
+        map.put("price", 42);
         map.put("id", id);
         return map;
     }
