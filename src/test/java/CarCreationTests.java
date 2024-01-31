@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @JsonAutoDetect
-public class CarsTests {
+public class CarCreationTests {
 
     private static final String BASE_URL = "https://retoolapi.dev/KCuEUu/cars";
 
