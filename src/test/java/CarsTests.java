@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import io.restassured.http.ContentType;
-import io.restassured.response.ValidatableResponse;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -16,14 +15,17 @@ public class CarsTests {
 
     @Test
     public void createCarResponseIsSuccess() {
-        createCarScenario(201, "");
+        String expectedResponse = "\"Brand\": \"Subaru\",\n" + "  \"price\": \"42\"";
+
+        createCarScenario(201, "", expectedResponse);
     }
 
     @Test
     public void createCarWitDuplicatedIdFails() {
-        createCarScenario(500, "1")
-                .and()
-                .body(containsString("Insert failed, duplicate id"));
+        String expectedResponse = "Insert failed, duplicate id";
+
+        createCarScenario(500, "1", expectedResponse);
+
     }
 
     private Map<String, String> createCarParams(String id) {
@@ -34,14 +36,16 @@ public class CarsTests {
         return map;
     }
 
-    private ValidatableResponse createCarScenario(int statusCode, String carId) {
-        return given()
+    private void createCarScenario(int statusCode, String carId, String responseToCheck) {
+        given()
                 .contentType(ContentType.JSON)
                 .body(createCarParams(carId))
                 .when()
                 .post(BASE_URL)
                 .then()
-                .assertThat().statusCode(statusCode);
+                .assertThat().statusCode(statusCode)
+                .and()
+                .body(containsString(responseToCheck));
     }
 
 }
