@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.RestAssured.delete;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -17,6 +18,22 @@ public class CarCreationTests {
     private static final String PRICE = "price";
     private static final String SUBARU = "Subaru";
     private static final String ID = "id";
+
+    @Test
+    public void createCarResponseIsSuccessWithId() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(BRAND, SUBARU);
+        map.put(PRICE, 42);
+        map.put(ID, 37);
+
+        createCarScenario(201, map)
+                .and()
+                .body(BRAND, equalTo(SUBARU),
+                        PRICE, equalTo(42),
+                        ID, equalTo(37));
+
+        delete(BASE_URL + "/37");
+    }
 
     @Test
     public void createCarResponseIsSuccessWithoutId() {
